@@ -243,6 +243,7 @@
         init();
         let wins = false;
         async function reset(){
+            dif = false;
             await loadWordl();
             guessNum = 0;
             status.textContent = "";
@@ -261,7 +262,7 @@
                 btn.style.backgroundColor = "";
                 btn.style.color = "black";
             });
-            let wins = false;
+            wins = false;
         }
         const win = document.getElementById("win");
         win.querySelector(".close-btn").addEventListener("click", () => {
