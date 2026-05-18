@@ -31,7 +31,6 @@
             font-size: clamp(1.8rem, 5vw, 3rem);
             text-align: center;
         }
-
         a {
             color: #007BFF;
             text-decoration: none;
@@ -91,35 +90,32 @@
             gap: 0.3rem;
             display: flex
         }
-        .corner-link,
-        .corner-link-2,
+        .corner-link {
+            position: fixed;
+            bottom: 1vw;
+            right: 1vw;
+            background: #fff;
+            padding: 0.3rem 0.6rem;
+            border-radius: 5px;
+            font-size: 1.5vw;
+        }
+        .corner-link-2 {
+            position: fixed;
+            bottom: 1vw;
+            right: 6.5vw;
+            background: #fff;
+            padding: 0.3rem 0.6rem;
+            border-radius: 5px;
+            font-size: 1.5vw;
+        }
         .corner-link-3 {
             position: fixed;
-            bottom: 1rem;
-            background: white;
-            padding: 0.55rem 0.9rem;
-            border-radius: 12px;
-            border: 2px solid #ccc;
-            font-size: clamp(0.9rem, 2vw, 1rem);
-            z-index: 1000;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            min-width: 90px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.12);
-        }
-
-        .corner-link {
-            left: 1rem;
-        }
-
-        .corner-link-2 {
-            left: 7.5rem;
-        }
-        .corner-link-3 {
-            left: 15rem;
+            bottom: 1vw;
+            right: 15.75vw;
+            background: #fff;
+            padding: 0.3rem 0.6rem;
+            border-radius: 5px;
+            font-size: 1.5vw;
         }
 
         .corner-link:hover,
@@ -130,24 +126,8 @@
         }
 
         @media (max-width: 600px) {
-            .corner-link,
             .corner-link-2 {
-                bottom: 0.7rem;
-                padding: 0.45rem 0.7rem;
-                font-size: 0.82rem;
-                min-width: 78px;
-            }
-
-            .corner-link {
-                left: 0.6rem;
-            }
-
-            .corner-link-2 {
-                left: 6.3rem;
-            }
-
-            .corner-link-3 {
-                left: 15rem;
+                right: 12vw;
             }
 
             #keyboard button {
@@ -167,7 +147,8 @@
 <body>
 
     <section id="project">
-        <h1>Guess the Word</h1>
+        <h1 style="margin-bottom:0.1rem;">Guess the Word</h1>
+        <h2 style="margin-top:0.2rem;">Spanish</h2>
         <div id = "board">
             <div class = "row">
                 <input oninput="this.value = this.value.replace(/[^a-zA-ZñÑ]/g, '');" inputmode="none" maxlength="1">
