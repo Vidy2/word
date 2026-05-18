@@ -148,7 +148,7 @@
 
     <section id="project">
         <h1 style="margin-bottom:0.1rem;">Guess the Word</h1>
-        <h2 style="margin-top:0.2rem;">Spanish</h2>
+        <h2 style="margin-top:0.2rem;">Foreign</h2>
         <div id = "board">
             <div class = "row">
                 <input oninput="this.value = this.value.replace(/[^a-zA-ZñÑ]/g, '');" inputmode="none" maxlength="1">
@@ -219,7 +219,7 @@
         let words = [];
         let guessNum = 0;
         async function loadWordl(){
-            const response = await fetch("./sa.txt");
+            const response = await fetch("./spe.txt");
             const text = await response.text();
 
             words = text.split("\n")
