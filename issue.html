@@ -196,12 +196,13 @@
             </div>
         </div>
         <p id ="status"></p>
-        <dialog id="win">
-            <button class="close-btn" aria-label="close">&times;</button>
-            <p style="font-size: 1.5rem; font-weight: bold; color:green;">You won!</p>
             <button class="corner-link" onclick="location.href='index.html';pulse(this)">Daily</button>
             <button class="corner-link-2" onclick="location.href='index.html';pulse(this)">Infinite</button>
             <button class="corner-link-3" onclick="reset(); pulse(this)">New Word</button>
+        <dialog id="win">
+            <button class="close-btn" aria-label="close">&times;</button>
+            <p style="font-size: 1.5rem; font-weight: bold; color:green;">You won!</p>
+            <button onclick="reset(); pulse(this)">New Word</button>
             
         </dialog>
     </section>
