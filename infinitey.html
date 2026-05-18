@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Knockoff Word</title>
+    <title>Site</title>
     <link rel="icon" type="image/png" href="./word-thing.png">
     <style>
         html, body {
@@ -155,8 +155,8 @@
 <body>
 
     <section id="project">
-        <h1 style="margin-bottom:0.1rem;">Guess the Word</h1>
-        <h2 style="margin-top:0.2rem;">Infinite</h2>
+        <h1 style="margin-bottom:0.1rem;">Thing</h1>
+        <h2 style="margin-top:0.2rem;">Multiple</h2>
         <div id = "board">
             <div class = "row">
                 <input oninput="this.value = this.value.replace(/[^a-zA-Z]/g, '')" inputmode="none" maxlength="1">
@@ -203,13 +203,13 @@
             </div>
         </div>
         <p id ="status"></p>
-        <button class="corner-link" onclick="location.href='index.html';pulse(this)">Daily</button>
-        <button class="corner-link-2" onclick="reset(); pulse(this)">New Word</button>
+        <button class="corner-link" onclick="location.href='index.html';pulse(this)">Normal</button>
+        <button class="corner-link-2" onclick="reset(); pulse(this)">Reload</button>
     </section>
         <dialog id="win">
             <button class="close-btn" aria-label="close">&times;</button>
             <p style="font-size: 1.5rem; font-weight: bold; color:green;">You won!</p>
-            <button id="reste" onclick="reset(); pulse(this)">New Word</button>
+            <button id="reste" onclick="reset(); pulse(this)">Reload</button>
         </dialog>
     <script>
         let word = "";
@@ -228,14 +228,14 @@
             const text = await response.text();
             words = text.split("\n").map(wordy => wordy.trim().toLowerCase());
         }
-        async function loadWordl(){
+        async function loadWordy(){
             const response = await fetch("./word-answers.txt");
             const data = await response.text();
             word = data.trim().toLowerCase();
             word = word.split("\n")[Math.floor(Math.random() * 2315)].trim();
         }
         async function init() {
-            await loadWordl();
+            await loadWordy();
             await loadWords();
             getActiveInput().focus();
         }
