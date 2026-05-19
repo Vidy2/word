@@ -156,6 +156,15 @@
             z-index: 5;
             animation: correctSlide 700ms cubic-bezier(.2,.8,.2,1) forwards;
         }
+        .corner-link {
+            position: fixed;
+            bottom: 1vw;
+            right: 1vw;
+            background: #fff;
+            padding: 0.3rem 0.6rem;
+            border-radius: 5px;
+            font-size: 1.5vw;
+        }
 
         @keyframes correctSlide {
 
@@ -264,7 +273,7 @@
                     <div class="dot"></div>
                 </div>
             </div>
-
+            <button class="corner-link" onclick="location.href='index.html';pulse(this)">Knockoff Word</button>
             <div id="status"></div>
 
         </div>
@@ -278,18 +287,9 @@
 
                     let uniqueID = Date.now();
 
-                    let midnight =
-                        new Date(
-                            now.getFullYear(),
-                            now.getMonth(),
-                            now.getDate(),
-                            23, 59, 59
-                        );
+                    let midnight = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59);
 
-                    document.cookie =
-                        "visitorID=" + uniqueID +
-                        ";expires=" + midnight.toUTCString() +
-                        "; path=/";
+                    document.cookie = "visitorID=" + uniqueID + ";expires=" + midnight.toUTCString() + "; path=/";
                 }
             }
 
@@ -304,13 +304,7 @@
 
                 let now = new Date();
 
-                let midnight =
-                    new Date(
-                        now.getFullYear(),
-                        now.getMonth(),
-                        now.getDate(),
-                        23, 59, 59
-                    );
+                let midnight = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59);
                 document.cookie =  "connectState=" + encodeURIComponent(JSON.stringify(state)) + ";expires=" + midnight.toUTCString() + "; path=/";}
             function loadProgress() {
                 const name = "connectState=";
@@ -339,8 +333,7 @@
                 }))
             );
 
-            let unsolvedCards = [...cards]
-                .sort(() => Math.random() - 0.5);
+            let unsolvedCards = [...cards].sort(() => Math.random() - 0.5);
 
             let solvedGroups = [];
 
@@ -352,17 +345,13 @@
 
             if (savedState) {
 
-                solvedGroups =
-                    savedState.solvedGroups || [];
+                solvedGroups = savedState.solvedGroups || [];
 
-                unsolvedCards =
-                    savedState.unsolvedCards || unsolvedCards;
+                unsolvedCards = savedState.unsolvedCards || unsolvedCards;
 
-                selected =
-                    savedState.selected || [];
+                selected = savedState.selected || [];
 
-                mistakes =
-                    savedState.mistakes || 0;
+                mistakes = savedState.mistakes || 0;
             }
 
             const colors = [
@@ -374,11 +363,9 @@
 
             const board = document.getElementById("board");
 
-            const submitBtn =
-                document.getElementById("submitBtn");
+            const submitBtn = document.getElementById("submitBtn");
 
-            const clearBtn =
-                document.getElementById("clearBtn");
+            const clearBtn = document.getElementById("clearBtn");
 
             function renderBoard() {
 
@@ -390,8 +377,7 @@
                     const title = document.createElement("div");
                     title.className = "solved-title";
                     title.textContent = group.category;
-                    const words =
-                        document.createElement("div");
+                    const words = document.createElement("div");
 
                     words.className = "solved-words";
                     words.textContent = group.cards.map(card => card.content).join(", ");
@@ -458,9 +444,7 @@
             const totalWidth = tileWidth * 4 + gap * 3;
             const startX = boardRect.left + (rowWidth - totalWidth) / 2;
             for (let i = 0; i < 4; i++) {
-                targetXPositions.push(
-                    startX + i * (tileWidth + gap)
-                );
+                targetXPositions.push(startX + i * (tileWidth + gap));
             }
             selectedButtons.forEach((btn, index) => {
                 const rect = btn.getBoundingClientRect();
@@ -475,11 +459,9 @@
                 btn.style.zIndex = "1000";
                 btn.style.backgroundColor = color;
                 requestAnimationFrame(() => {
-                    btn.style.transition =
-                        "transform 500ms cubic-bezier(.2,.8,.2,1)";
+                    btn.style.transition = "transform 500ms cubic-bezier(.2,.8,.2,1)";
 
-                    btn.style.transform =
-                        `translate(${dx}px, ${dy}px)`;
+                    btn.style.transform = `translate(${dx}px, ${dy}px)`;
                 });
             });
 
@@ -490,9 +472,7 @@
             submitBtn.addEventListener("click", () => {
 
                 if (selected.length !== 4) {
-                    document.getElementById("status")
-                    .textContent =
-                    "Choose 4 tiles";
+                    document.getElementById("status").textContent = "Choose 4 tiles";
                     return;
                 }
                 const chosenCards = unsolvedCards.filter(card => selected.includes(card.content));
@@ -515,8 +495,7 @@
                         selected = [];
                         renderBoard();
                         saveProgress();
-                        document.querySelectorAll(".row")
-                            .forEach(row => {
+                        document.querySelectorAll(".row").forEach(row => {
                                 row.classList.add("shift-up");
                             });
                         submitBtn.disabled = false;
@@ -524,28 +503,22 @@
                         if (solvedGroups.length === 4) {
                             const status = document.getElementById("status");
                             if (mistakes === 0) {
-                                status.textContent =
-                                    "Perfect! No mistakes.";
+                                status.textContent = "Perfect! No mistakes.";
                             } else if (mistakes === 1) {
-                                status.textContent =
-                                    "Great job! Only 1 mistake.";
+                                status.textContent = "Great job! Only 1 mistake.";
                             } else if (mistakes === 2) {
-                                status.textContent =
-                                    "Good job! 2 mistakes.";
+                                status.textContent = "Good job! 2 mistakes.";
                             } else if (mistakes === 3) {
-                                status.textContent =
-                                    "Close win! 3 mistakes.";
+                                status.textContent = "Close win! 3 mistakes.";
                             } else {
-                                status.textContent =
-                                    "Solved.";
+                                status.textContent = "Solved.";
                             }
                         }
                     }, 700);
                 } else {
                     const counts = {};
                     chosenCards.forEach(card => {
-                        counts[card.category] =
-                            (counts[card.category] || 0) + 1;
+                        counts[card.category] = (counts[card.category] || 0) + 1;
                     });
                     const oneAway = Object.values(counts).includes(3);
                     mistakes++;
@@ -570,15 +543,13 @@
                     selected = [];
                     saveProgress();
                     if (mistakes >= 4) {
-                        status.textContent =
-                            "Game Over";
+                        status.textContent = "Game Over";
                     }
                 }
             });
             function updateMistakes() {
 
-                const dots =
-                    document.querySelectorAll(".dot");
+                const dots = document.querySelectorAll(".dot");
 
                 for (let i = 0; i < mistakes; i++) {
                     dots[i].classList.add("lost");
