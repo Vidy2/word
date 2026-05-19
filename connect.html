@@ -4,113 +4,238 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Knockoff Connect</title>
-    <link rel="icon" type="image/png" href="./word-thing.png">
+    <link rel="icon" type="image/webp" href="./connect.webp">
     <style>
         html, body {
             height: 100%;
-            overflow-x: hidden;
-        }
-        body {
-            font-family: inherit, serif;
             margin: 0;
-            padding: 0;
-            line-height: 1.5;
-            overflow-x: hidden;
-            background-size: cover;
-            background-repeat: no-repeat;
-            min-height: 100dvh;
-            background-color: #e5e5da;
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #f5f5f0;
         }
 
-        section {
-            padding: clamp(1rem, 4vw, 2rem);
-            text-align:center;
-        }
-
-        h1 {
-            font-size: clamp(1.8rem, 5vw, 3rem);
-            text-align: center;
-        }
-
-        a {
-            color: #007BFF;
-            text-decoration: none;
-        }
-        button {
-            display: block;
-            margin: 0 auto;
-            width: clamp(5rem, 20vw, 8rem);
-            height: clamp(5rem, 20vw, 8rem);
-            text-align: center;
-            border-radius: 0.1px;
-            border-color: #EFEFE6;
-            background-color: #EFEFE6;
-            text-transform: bold;
-            font-size: clamp(1rem, 3vw, 1.2rem);
-        }
-        input{
-            text-transform: uppercase;
-            width: clamp(3rem, 12vw, 5rem);
-            height: clamp(3rem, 12vw, 5rem);
-            text-align: center;
-            font-size: 2rem;
-            transition: background-color 0.3s ease;
-            background-color: #ccccbb;
-            border:none;
-        }
-        dialog {
-            position: relative;
-            padding: 2rem;
-            border-radius: 8px;
-            border: 1px solid #ccc;
-            }
-        #status {
-            font-size: clamp(1rem, 3vw, 1.5rem);
-            color: darkgreen;
-            margin-top: 1rem;
-        }
-        #board {
+        body {
             display: flex;
             flex-direction: column;
             align-items: center;
+            color: #222;
         }
-        .close-btn {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
+
+        h1 {
+            margin-top: 1rem;
+            font-size: 3rem;
         }
-        .row1 {
-            margin-top: 0.5rem;
+
+        #game {
+            width: min(95vw, 520px);
         }
-        .corner-link {
-            position: fixed;
-            bottom: 1rem;
-            right: 1rem;
-            background: #fff;
-            padding: 0.3rem 0.6rem;
-            border-radius: 5px;
-            font-size: 0.8rem;
+
+        #board {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
         }
-        .pulse {
-            animation: pulse 0.2s ease;
-        }
+
         .row {
-            margin-bottom: 0.2rem;
-            gap: 0.3rem;
-            display: flex
+            display: flex;
+            gap: 8px;
         }
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.08); }
-            100% { transform: scale(1); }
+
+        button.tile {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            border: none;
+            border-radius: 12px;
+            background: #e7e5dc;
+            font-weight: bold;
+            font-size: clamp(0.8rem, 2vw, 1.1rem);
+            cursor: pointer;
+            transition: 0.15s ease;
+            color: #222;
         }
-        @media (max-width: 200px) {
-            h2 {
-                font-size: 2rem;
+
+        button.tile:hover {
+            background: #d8d5ca;
+            transform: scale(1.02);
+        }
+
+        button.tile.selected {
+            background: #5a594e;
+            color: white;
+        }
+
+        button.tile.solved {
+            color: white;
+            cursor: default;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .controls button {
+            padding: 12px 18px;
+            border-radius: 24px;
+            border: none;
+            background: black;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .controls button:hover {
+            opacity: 0.9;
+        }
+
+        #mistakes {
+            margin-top: 24px;
+            text-align: center;
+        }
+
+        .mistake-dots {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .dot {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: black;
+        }
+
+        .dot.lost {
+            background: #ccc;
+        }
+
+        .shake {
+            animation: shake 0.4s;
+        }
+        #status {
+            margin-top: 20px;
+            text-align: center;
+            min-height: 40px;
+            font-weight: bold;
+            font-size: 1rem;
+        }
+
+        .solved-group {
+            border-radius: 12px;
+            padding: 12px;
+            color: black;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .solved-title {
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+        }
+
+        .solved-words {
+            margin-top: 4px;
+            font-size: 0.95rem;
+            font-weight: normal;
+        }
+
+        .tile {
+            transition:
+                transform 0.2s ease,
+                background-color 0.2s ease,
+                opacity 0.2s ease;
+        }
+
+        .tile.correct {
+            position: relative;
+            z-index: 5;
+            animation: correctSlide 700ms cubic-bezier(.2,.8,.2,1) forwards;
+        }
+
+        @keyframes correctSlide {
+
+            0% {
+                transform: scale(1);
+            }
+
+            20% {
+                transform: scale(1.08);
+            }
+
+            45% {
+                transform: scale(1);
+            }
+
+            100% {
+                transform: translateY(-80px);
+                opacity: 0;
+            }
+        }
+
+        @keyframes correctPop {
+            0% {
+                transform: scale(1);
+            }
+
+            30% {
+                transform: scale(1.12);
+            }
+
+            55% {
+                transform: scale(0.96);
+            }
+
+            75% {
+                transform: scale(1.05);
+            }
+
+            100% {
+                transform: scale(0);
+                opacity: 0;
+            }
+        }
+
+        .row.shift-up {
+            animation: shiftUp 350ms ease;
+        }
+
+        @keyframes shiftUp {
+            from {
+                transform: translateY(24px);
+                opacity: 0.7;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .solved-group {
+            border-radius: 12px;
+            padding: 14px;
+            color: black;
+            text-align: center;
+            font-weight: bold;
+            animation: solvedReveal 350ms cubic-bezier(.2,.8,.2,1);
+        }
+
+        @keyframes solvedReveal {
+            0% {
+                opacity: 0;
+                transform: scale(0.92) translateY(12px);
+            }
+
+            70% {
+                opacity: 1;
+                transform: scale(1.02) translateY(0);
+            }
+
+            100% {
+                transform: scale(1);
             }
         }
     </style>
@@ -118,42 +243,405 @@
 <body>
     <h1>Knockoff Connect</h1>
     <section>
-        <div id = board></div>
+        <div id="game">
+
+            <div id="board"></div>
+
+            <div class="controls">
+                <button id="clearBtn">Deselect All</button>
+                <button id="submitBtn">Submit</button>
+            </div>
+
+            <div id="mistakes">
+                <div>Mistakes Remaining</div>
+
+                <div class="mistake-dots">
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                </div>
+            </div>
+
+            <div id="status"></div>
+
+        </div>
     </section>
     <script>
-        async function loadConnect(){
+        async function loadConnect() {
+            function cookieSetter() {
+                if (document.cookie.indexOf("visitorID=") === -1) {
+
+                    let now = new Date();
+
+                    let uniqueID = Date.now();
+
+                    let midnight =
+                        new Date(
+                            now.getFullYear(),
+                            now.getMonth(),
+                            now.getDate(),
+                            23, 59, 59
+                        );
+
+                    document.cookie =
+                        "visitorID=" + uniqueID +
+                        ";expires=" + midnight.toUTCString() +
+                        "; path=/";
+                }
+            }
+
+            function saveProgress() {
+
+                const state = {
+                    solvedGroups,
+                    unsolvedCards,
+                    selected,
+                    mistakes
+                };
+
+                let now = new Date();
+
+                let midnight =
+                    new Date(
+                        now.getFullYear(),
+                        now.getMonth(),
+                        now.getDate(),
+                        23, 59, 59
+                    );
+                document.cookie =  "connectState=" + encodeURIComponent(JSON.stringify(state)) + ";expires=" + midnight.toUTCString() + "; path=/";}
+            function loadProgress() {
+                const name = "connectState=";
+                const decodedCookie = decodeURIComponent(document.cookie);
+                const cookies = decodedCookie.split(";");
+                for (let i = 0; i < cookies.length; i++) {
+                    let c = cookies[i].trim();
+                    if (c.indexOf(name) === 0) {
+                        return JSON.parse(
+                            c.substring(name.length)
+                        );
+                    }
+                }
+                return null;
+            }
+            cookieSetter();
             const response = await fetch("connect.json");
             const data = await response.json();
-            const cards = data.categories.flatMap(category => category.cards);
-            const board = document.getElementById("board");
-            for (let i = 0; i < 4; i++) {
-                const row = document.createElement("div");
-                row.className = "row";
-                for (let j = 0; j < 4; j++) {
-                    const button = document.createElement("button");
-                    button.dataset.var = false;
-                    button.id = (i * 4 + j);
-                    const num = parseInt(button.id);
-                    const card = cards.find(c => c.position === num);
-                    button.textContent = card ? card.content : "";
-                    row.appendChild(button);
-                }
-                board.appendChild(row);
+
+            const categories = data.categories;
+
+            const cards = categories.flatMap(category =>
+                category.cards.map(card => ({
+                    ...card,
+                    category: category.title
+                }))
+            );
+
+            let unsolvedCards = [...cards]
+                .sort(() => Math.random() - 0.5);
+
+            let solvedGroups = [];
+
+            let selected = [];
+
+            let mistakes = 0;
+
+            const savedState = loadProgress();
+
+            if (savedState) {
+
+                solvedGroups =
+                    savedState.solvedGroups || [];
+
+                unsolvedCards =
+                    savedState.unsolvedCards || unsolvedCards;
+
+                selected =
+                    savedState.selected || [];
+
+                mistakes =
+                    savedState.mistakes || 0;
             }
+
+            const colors = [
+                "#f9df6d",
+                "#a0c35a",
+                "#b0c4ef",
+                "#ba81c5"
+            ];
+
+            const board = document.getElementById("board");
+
+            const submitBtn =
+                document.getElementById("submitBtn");
+
+            const clearBtn =
+                document.getElementById("clearBtn");
+
+            function renderBoard() {
+
+                board.innerHTML = "";
+                solvedGroups.forEach(group => {
+                    const solvedBox =
+                        document.createElement("div");
+                    solvedBox.className =
+                        "solved-group";
+
+                    solvedBox.style.backgroundColor =
+                        group.color;
+
+                    const title =
+                        document.createElement("div");
+
+                    title.className =
+                        "solved-title";
+
+                    title.textContent =
+                        group.category;
+
+                    const words =
+                        document.createElement("div");
+
+                    words.className =
+                        "solved-words";
+
+                    words.textContent =
+                        group.cards
+                            .map(card => card.content)
+                            .join(", ");
+
+                    solvedBox.appendChild(title);
+                    solvedBox.appendChild(words);
+
+                    board.appendChild(solvedBox);
+                });
+
+                for (
+                    let i = 0;
+                    i < unsolvedCards.length;
+                    i += 4
+                ) {
+
+                    const row =
+                        document.createElement("div");
+
+                    row.className = "row";
+
+                    const rowCards =
+                        unsolvedCards.slice(i, i + 4);
+
+                    rowCards.forEach(card => {
+
+                        const button =
+                            document.createElement("button");
+
+                        button.className = "tile";
+
+                        button.textContent =
+                            card.content;
+
+                        button.dataset.category =
+                            card.category;
+
+                        button.dataset.content =
+                            card.content;
+
+                        button.addEventListener(
+                            "click",
+                            () => toggleSelect(button)
+                        );
+
+                        row.appendChild(button);
+                    });
+
+                    board.appendChild(row);
+                }
+
+                restoreSelections();
+            }
+
+            function toggleSelect(button) {
+
+                if (button.classList.contains("selected")) {
+
+                    button.classList.remove("selected");
+
+                    selected =
+                        selected.filter(
+                            item =>
+                                item !==
+                                button.dataset.content
+                        );
+                } else {
+                    if (selected.length >= 4) {
+                        return;
+                    }
+                    button.classList.add("selected");
+                    selected.push(
+                        button.dataset.content
+                    );
+                }
+                saveProgress();
+            }
+            function restoreSelections() {
+                document.querySelectorAll(".tile").forEach(button => {
+                        if (selected.includes(button.dataset.content)) {
+                            button.classList.add("selected");
+                        }
+                    });
+            }
+
+            clearBtn.addEventListener("click", () => {
+
+                selected = [];
+
+                document.querySelectorAll(".tile").forEach(button =>
+                        button.classList.remove("selected"));
+                saveProgress();
+            });
+        async function animateSolve(selectedButtons, color) {
+            const boardRect = board.getBoundingClientRect();
+            const targetY = boardRect.top + (solvedGroups.length * 92);
+            const targetXPositions = [];
+            const rowWidth = boardRect.width;
+            const tileWidth = selectedButtons[0].getBoundingClientRect().width;
+            const gap = 8;
+            const totalWidth = tileWidth * 4 + gap * 3;
+            const startX = boardRect.left + (rowWidth - totalWidth) / 2;
+            for (let i = 0; i < 4; i++) {
+                targetXPositions.push(
+                    startX + i * (tileWidth + gap)
+                );
+            }
+            selectedButtons.forEach((btn, index) => {
+                const rect = btn.getBoundingClientRect();
+                const dx = targetXPositions[index] - rect.left;
+                const dy = targetY - rect.top;
+                btn.style.position = "fixed";
+                btn.style.left = rect.left + "px";
+                btn.style.top = rect.top + "px";
+                btn.style.width = rect.width + "px";
+                btn.style.height = rect.height + "px";
+                btn.style.margin = "0";
+                btn.style.zIndex = "1000";
+                btn.style.backgroundColor = color;
+                requestAnimationFrame(() => {
+                    btn.style.transition =
+                        "transform 500ms cubic-bezier(.2,.8,.2,1)";
+
+                    btn.style.transform =
+                        `translate(${dx}px, ${dy}px)`;
+                });
+            });
+
+            return new Promise(resolve =>
+                setTimeout(resolve, 520)
+            );
         }
-        document.querySelectorAll("button").forEach(button => {
-            button.addEventListener("click", () => {
-                button.classList.add("pulse");
-                setTimeout(() => button.classList.remove("pulse"), 200);
+            submitBtn.addEventListener("click", () => {
+
+                if (selected.length !== 4) {
+                    document.getElementById("status")
+                    .textContent =
+                    "Choose 4 tiles";
+                    return;
+                }
+                const chosenCards = unsolvedCards.filter(card => selected.includes(card.content));
+                const category = chosenCards[0].category;
+                const correct = chosenCards.every(card => card.category === category);
+                if (correct) {
+                    const selectedButtons = document.querySelectorAll(".selected");
+                    submitBtn.disabled = true;
+                    clearBtn.disabled = true;
+                    selectedButtons.forEach(btn => {
+                        btn.classList.add("correct");
+                    });
+                    setTimeout(() => {
+                        solvedGroups.push({
+                            cards: chosenCards,
+                            category: category,
+                            color: colors[solvedGroups.length]
+                        });
+                        unsolvedCards = unsolvedCards.filter(card => !selected.includes(card.content));
+                        selected = [];
+                        renderBoard();
+                        saveProgress();
+                        document.querySelectorAll(".row")
+                            .forEach(row => {
+                                row.classList.add("shift-up");
+                            });
+                        submitBtn.disabled = false;
+                        clearBtn.disabled = false;
+                        if (solvedGroups.length === 4) {
+                            const status = document.getElementById("status");
+                            if (mistakes === 0) {
+                                status.textContent =
+                                    "Perfect! No mistakes.";
+                            } else if (mistakes === 1) {
+                                status.textContent =
+                                    "Great job! Only 1 mistake.";
+                            } else if (mistakes === 2) {
+                                status.textContent =
+                                    "Good job! 2 mistakes.";
+                            } else if (mistakes === 3) {
+                                status.textContent =
+                                    "Close win! 3 mistakes.";
+                            } else {
+                                status.textContent =
+                                    "Solved.";
+                            }
+                        }
+                    }, 700);
+                } else {
+                    const counts = {};
+                    chosenCards.forEach(card => {
+                        counts[card.category] =
+                            (counts[card.category] || 0) + 1;
+                    });
+                    const oneAway = Object.values(counts).includes(3);
+                    mistakes++;
+                    updateMistakes();
+                    const status = document.getElementById("status");
+                    if (oneAway) {
+                        status.textContent = "One away";
+                    } else {
+                        status.textContent = "Incorrect";
+                    }
+                    const selectedButtons = document.querySelectorAll(".selected");
+                    selectedButtons.forEach(btn => {
+                        btn.classList.add("shake");
+                    });
+                    setTimeout(() => {
+                        selectedButtons.forEach(btn => {
+                            btn.classList.remove("shake");
+                            btn.classList.remove("selected");
+                        });
+
+                    }, 400);
+                    selected = [];
+                    saveProgress();
+                    if (mistakes >= 4) {
+                        status.textContent =
+                            "Game Over";
+                    }
+                }
             });
-        });
+            function updateMistakes() {
+
+                const dots =
+                    document.querySelectorAll(".dot");
+
+                for (let i = 0; i < mistakes; i++) {
+                    dots[i].classList.add("lost");
+                }
+            }
+
+            setTimeout(() => {
+                renderBoard();
+                updateMistakes();
+            }, 250);
+        }
+
         loadConnect();
-        const buttons = document.querySelectorAll("button");
-        buttons.forEach(button => {
-            button.addEventListener('click', () => {
-                button.style.backgroundColor = "gray";
-                button.dataset.var = true;
-            });
-        });
-    </script>
+        </script>
 </body>
