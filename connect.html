@@ -51,6 +51,7 @@
             cursor: pointer;
             transition: 0.15s ease;
             color: #222;
+            height:6vw;
         }
 
         button.tile:hover {
@@ -124,6 +125,7 @@
         }
 
         .solved-group {
+            font-size:10vw;
             border-radius: 12px;
             padding: 12px;
             color: black;
@@ -132,13 +134,13 @@
         }
 
         .solved-title {
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             letter-spacing: 1px;
         }
 
         .solved-words {
             margin-top: 4px;
-            font-size: 0.95rem;
+            font-size: 1rem;
             font-weight: normal;
         }
 
@@ -382,104 +384,51 @@
 
                 board.innerHTML = "";
                 solvedGroups.forEach(group => {
-                    const solvedBox =
-                        document.createElement("div");
-                    solvedBox.className =
-                        "solved-group";
-
-                    solvedBox.style.backgroundColor =
-                        group.color;
-
-                    const title =
-                        document.createElement("div");
-
-                    title.className =
-                        "solved-title";
-
-                    title.textContent =
-                        group.category;
-
+                    const solvedBox = document.createElement("div");
+                    solvedBox.className = "solved-group";
+                    solvedBox.style.backgroundColor =  group.color;
+                    const title = document.createElement("div");
+                    title.className = "solved-title";
+                    title.textContent = group.category;
                     const words =
                         document.createElement("div");
 
-                    words.className =
-                        "solved-words";
-
-                    words.textContent =
-                        group.cards
-                            .map(card => card.content)
-                            .join(", ");
-
+                    words.className = "solved-words";
+                    words.textContent = group.cards.map(card => card.content).join(", ");
                     solvedBox.appendChild(title);
                     solvedBox.appendChild(words);
-
                     board.appendChild(solvedBox);
                 });
 
-                for (
-                    let i = 0;
-                    i < unsolvedCards.length;
-                    i += 4
-                ) {
+                for (let i = 0; i < unsolvedCards.length; i += 4) {
 
-                    const row =
-                        document.createElement("div");
-
+                    const row = document.createElement("div");
                     row.className = "row";
-
-                    const rowCards =
-                        unsolvedCards.slice(i, i + 4);
-
+                    const rowCards = unsolvedCards.slice(i, i + 4);
                     rowCards.forEach(card => {
-
-                        const button =
-                            document.createElement("button");
-
+                        const button = document.createElement("button");
                         button.className = "tile";
+                        button.textContent = card.content;
+                        button.dataset.category = card.category;
+                        button.dataset.content = card.content;
 
-                        button.textContent =
-                            card.content;
-
-                        button.dataset.category =
-                            card.category;
-
-                        button.dataset.content =
-                            card.content;
-
-                        button.addEventListener(
-                            "click",
-                            () => toggleSelect(button)
-                        );
-
+                        button.addEventListener("click",() => toggleSelect(button));
                         row.appendChild(button);
                     });
-
                     board.appendChild(row);
                 }
-
                 restoreSelections();
             }
-
             function toggleSelect(button) {
-
                 if (button.classList.contains("selected")) {
-
                     button.classList.remove("selected");
-
-                    selected =
-                        selected.filter(
-                            item =>
-                                item !==
-                                button.dataset.content
-                        );
+                    selected = selected.filter(item => item !== button.dataset.content);
                 } else {
                     if (selected.length >= 4) {
                         return;
                     }
                     button.classList.add("selected");
-                    selected.push(
-                        button.dataset.content
-                    );
+                    selected.push(button.dataset.content);
                 }
                 saveProgress();
             }
