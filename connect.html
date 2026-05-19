@@ -41,7 +41,9 @@
         }
 
         button.tile {
+            word-wrap: break-word;
             width: 100%;
+            max-width: 15rem;
             aspect-ratio: 1 / 1;
             border: none;
             border-radius: 12px;
@@ -51,7 +53,11 @@
             cursor: pointer;
             transition: 0.15s ease;
             color: #222;
-            height:6vw;
+            display: flex;
+            height: 7vw;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
         }
 
         button.tile:hover {
@@ -125,9 +131,11 @@
         }
 
         .solved-group {
-            font-size:10vw;
+            font-family: 'Franklin Gothic Medium', Arial, sans-serif;
+            font-size: 10vw;
             border-radius: 12px;
             padding: 12px;
+            height: 5vw;
             color: black;
             text-align: center;
             font-weight: bold;
@@ -136,10 +144,11 @@
         .solved-title {
             font-size: 1.2rem;
             letter-spacing: 1px;
+            font-weight: bold;
         }
 
         .solved-words {
-            margin-top: 4px;
+            margin-top: 15px;
             font-size: 1rem;
             font-weight: normal;
         }
